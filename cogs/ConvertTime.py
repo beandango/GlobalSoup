@@ -13,18 +13,14 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 donate = "Helpful? Consider using `/donate`"
 ohno = "Hey, developer here, don't get me in trouble please lol"
 
-class Convert(commands.Cog):
+class ConvertTime(commands.Cog):
     def __init__(self, client: commands.Bot):
         self.client = client
-        self.ctx_menu = app_commands.ContextMenu(
-            name='Convert Time',
-            callback=self.convert, # set the callback
-        )
-        client.tree.add_command(self.ctx_menu) # add the context menu to the tree
-        
-    async def convert(self, interaction: discord.Interaction, message: discord.Message):
 
-        response = await dateparse.parse_date_time(message.content)
+    @app_commands.command(name="converttime", description="Convert a time into a specified timezone")
+    async def converttime(self, interaction: discord.Interaction, time: str):
+
+        response = await dateparse.parse_date_time(time)
         if response == "false":
             await interaction.response.send_message(f"I couldn't find a time in that message :sob:", ephemeral=True)
             return
@@ -38,5 +34,4 @@ class Convert(commands.Cog):
                 await interaction.followup.send(f"{donate}", ephemeral=True)
 
 async def setup(client:commands.Bot):
-    await client.add_cog(Convert(client))
-
+    await client.add_cog(ConvertTime(client))

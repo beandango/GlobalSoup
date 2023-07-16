@@ -7,10 +7,12 @@ from discord import app_commands
 import os
 import openai
 from pymongo import MongoClient
-
 from Usages import get_and_increment_usage
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
+
+donate = "Helpful? Consider using `/donate`"
+ohno = "Hey, developer here, don't get me in trouble please lol"
 
 mongo = MongoClient(os.environ['MONGO_URL'])
 db = mongo.Soup
@@ -41,7 +43,6 @@ class TranslateMsg(commands.Cog):
 
         # actual command
 
-        ohno = "Hey, developer here, don't get me in trouble please lol"
         prompt = f"Translate \"{text.content}\" into {lang} like a native speaker. Don't romanize anything or put it in quotes."
 
         bad = openai.Moderation.create(input=text.content)
@@ -52,7 +53,6 @@ class TranslateMsg(commands.Cog):
                 messages=[{"role": "user", "content": prompt}])
             
             response = msg.choices[0].message.content
-            donate = "Helpful? Consider using `/donate`"
 
             # response
 

@@ -10,6 +10,9 @@ from Usages import get_and_increment_usage
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
+donate = "Helpful? Consider using `/donate`"
+ohno = "Hey, developer here, don't get me in trouble please lol"
+
 mongo = MongoClient(os.environ['MONGO_URL'])
 db = mongo.Soup
 
@@ -23,7 +26,7 @@ class Translate(commands.Cog):
         await interaction.response.defer()
 
         ohno = "Hey, developer here, don't get me in trouble please lol"
-        prompt = f"Translate \"{text}\" into {lang} like a native speaker. Don't romanize anything or put it in quotes."
+        prompt = f"Translate \"{text}\" into {lang} like a native speaker. Don't romanize anything or put it in quotes, and dont explain it! Just translate it exactly as it is."
 
         bad = openai.Moderation.create(input=text)
 
@@ -33,7 +36,6 @@ class Translate(commands.Cog):
                 messages=[{"role": "user", "content": prompt}])
             
             response = msg.choices[0].message.content
-            donate = "Helpful? Consider using `/donate`"
 
             # response
 
