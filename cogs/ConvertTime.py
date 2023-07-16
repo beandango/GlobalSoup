@@ -1,12 +1,14 @@
 import os
 from random import randint
+import dateparser
 import discord
 from discord.ext import commands
 from discord import app_commands
 from discord.ext import commands
-import dateparse
+from dateutil.parser import parse
+import pytz
+import time
 import openai
-from Usages import get_and_increment_usage
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -18,20 +20,33 @@ class ConvertTime(commands.Cog):
         self.client = client
 
     @app_commands.command(name="converttime", description="Convert a time into a specified timezone")
-    async def converttime(self, interaction: discord.Interaction, time: str):
+    async def converttime(self, interaction: discord.Interaction, time_str: str, date_str: str, timezone_str: str):
 
-        response = await dateparse.parse_date_time(time)
-        if response == "false":
-            await interaction.response.send_message(f"I couldn't find a time in that message :sob:", ephemeral=True)
-            return
-        else:
-            response = int(float(response))
-            await interaction.response.send_message(f"<t:{response}>")
+        try:
+            # Combine date, time and timezone strings
+            datetime_str = f'{date_str} {time_str} {timezone_str}'
+            
+            # Parse the string to datetime
+            datetime_obj = dateparser.parse(datetime_str)
 
-            # donate message 
-            chance = randint(1, 1000)
-            if chance > 800:
-                await interaction.followup.send(f"{donate}", ephemeral=True)
+            if datetime_obj is None:
+                raise ValueError("Couldn't parse datetime string")
+
+            # Convert to UTC timezone
+            datetime_obj_utc = datetime_obj.astimezone(pytz.UTC)
+
+            # Convert to UNIX timestamp
+            unix_timestamp = int(datetime_obj_utc.timestamp())
+            
+            await interaction.response.send_message(f"<t:{unix_timestamp}>")
+        
+        except Exception as e:
+            await interaction.response.send_message(f"I couldn't parse the provided information. Please try using a more specific date and time format.")
+
+        # donate message 
+        chance = randint(1, 1000)
+        if chance > 800:
+            await interaction.followup.send(f"{donate}", ephemeral=True)
 
 async def setup(client:commands.Bot):
     await client.add_cog(ConvertTime(client))
