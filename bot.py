@@ -17,9 +17,7 @@ class Client(commands.Bot):
 
     async def on_ready(self):
         print(f"Bot connected!")
-
         await self.change_presence(activity=discord.Game(name="with rats"))
-
         try:
             synced = await self.tree.sync()
             print(f"Synced {len(synced)} commands")
