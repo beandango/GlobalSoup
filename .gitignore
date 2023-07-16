@@ -1,0 +1,13 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+
+# Environments
+.venv/
+.env
+
+# Other
+*.zip
+.vscode/
+discloud.config
+requirements.txt
+.DS_Store
