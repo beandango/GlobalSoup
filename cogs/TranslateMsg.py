@@ -8,6 +8,8 @@ import os
 import openai
 from pymongo import MongoClient
 
+from Usages import get_and_increment_usage
+
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 mongo = MongoClient(os.environ['MONGO_URL'])
@@ -57,10 +59,11 @@ class TranslateMsg(commands.Cog):
             await asyncio.sleep(delay=0)
             await interaction.followup.send(f"{response}\n\n{text.jump_url}")
 
-            # donate message 
+            count = get_and_increment_usage(user_id)
 
-            chance = randint(1, 100000)
-            if chance > 90000:
+            # donate message 
+            chance = randint(1, 10)
+            if chance > 5 and count > 10:
                 await interaction.followup.send(f"{donate}", ephemeral=True)
         else:
             await asyncio.sleep(delay=0)

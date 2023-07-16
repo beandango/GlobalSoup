@@ -1,12 +1,12 @@
 import asyncio
 from random import randint
-import re
 import discord
 from discord.ext import commands
 from discord import app_commands
 import os
 import openai
 from pymongo import MongoClient
+from Usages import get_and_increment_usage
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -40,10 +40,12 @@ class Translate(commands.Cog):
             await asyncio.sleep(delay=0)
             await interaction.followup.send(f"{response}")
 
+            user_id = interaction.user.id
+            count = get_and_increment_usage(user_id)
+
             # donate message 
-            
-            chance = randint(1, 100000)
-            if chance > 90000:
+            chance = randint(1, 10)
+            if chance > 5 and count > 10:
                 await interaction.followup.send(f"{donate}", ephemeral=True)
         else:
             await asyncio.sleep(delay=0)
