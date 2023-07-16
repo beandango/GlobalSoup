@@ -8,6 +8,5 @@ __pycache__/
 # Other
 *.zip
 .vscode/
-discloud.config
 requirements.txt
 .DS_Store
