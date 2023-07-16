@@ -41,7 +41,7 @@ class Translate(commands.Cog):
             await interaction.followup.send(f"{response}")
 
             user_id = interaction.user.id
-            count = get_and_increment_usage(user_id)
+            count = await get_and_increment_usage(user_id)
 
             # donate message 
             chance = randint(1, 10)

@@ -59,7 +59,7 @@ class TranslateMsg(commands.Cog):
             await asyncio.sleep(delay=0)
             await interaction.followup.send(f"{response}\n\n{text.jump_url}")
 
-            count = get_and_increment_usage(user_id)
+            count = await get_and_increment_usage(user_id)
 
             # donate message 
             chance = randint(1, 10)
