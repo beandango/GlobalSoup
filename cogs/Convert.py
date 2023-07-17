@@ -1,14 +1,9 @@
-import os
 from random import randint
 import discord
 from discord.ext import commands
 from discord import app_commands
 from discord.ext import commands
 import dateparse
-import openai
-from Usages import get_and_increment_usage
-
-openai.api_key = os.getenv("OPENAI_API_KEY")
 
 donate = "Helpful? Consider using `/donate`"
 ohno = "Hey, developer here, don't get me in trouble please lol"

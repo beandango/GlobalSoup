@@ -1,13 +1,12 @@
 import asyncio
 from random import randint
-import re
 import discord
 from discord.ext import commands
 from discord import app_commands
 import os
 import openai
 from pymongo import MongoClient
-from Usages import get_and_increment_usage
+import Usages
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -31,12 +30,12 @@ class TranslateMsg(commands.Cog):
         await interaction.response.defer()
 
         user_id = interaction.user.id
-        document = db.UserLangs.find_one({"_id": user_id})
+        setlang = db.UserLangs.find_one({"_id": user_id})
 
         # check if user has preferred lang setup
 
-        if document is not None:
-            lang = document['lang']
+        if setlang is not None:
+            lang = setlang['lang']
         else:
             await interaction.followup.send("You don't have a preferred language set up! To do so, please use `/setlang` first :)", ephemeral=True)
             return
@@ -59,7 +58,7 @@ class TranslateMsg(commands.Cog):
             await asyncio.sleep(delay=0)
             await interaction.followup.send(f"{response}\n\n{text.jump_url}")
 
-            count = await get_and_increment_usage(user_id)
+            count = await Usages.get_and_increment_usage(user_id)
 
             # donate message 
             chance = randint(1, 10)

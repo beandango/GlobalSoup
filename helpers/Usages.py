@@ -17,3 +17,12 @@ async def get_and_increment_usage(user_id: int):
         # If user does not exist, create a new document with 'total' field set to 1
         Usages.insert_one({"_id": user_id, "total": 1})
         return 1
+
+async def get_usage(user_id: int):
+    document = Usages.find_one({"_id": user_id})
+
+    if document is not None:
+        # If user exists, return the value
+        return document['total']
+    else:
+        return 0

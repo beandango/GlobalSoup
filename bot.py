@@ -9,7 +9,7 @@ class Client(commands.Bot):
     def __init__(self):
         super().__init__(command_prefix=commands.when_mentioned_or('!'), intents=discord.Intents().all())
 
-        self.cogslist = ["cogs.Help","cogs.Timezones", "cogs.Convert", "cogs.now", "cogs.Translate", "cogs.SetLang", "cogs.TranslateMsg", "cogs.donate", "cogs.ConvertTime"]
+        self.cogslist = ["cogs.Help","cogs.Timezones", "cogs.Convert", "cogs.Translate", "cogs.SetLang", "cogs.TranslateMsg", "cogs.donate", "cogs.ConvertTime"]
     
     async def setup_hook(self):
         for ext in self.cogslist:
