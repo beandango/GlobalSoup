@@ -1,9 +1,8 @@
 from random import randint
+from helpers.dateparse import parse_date_time
 import discord
 from discord.ext import commands
 from discord import app_commands
-from discord.ext import commands
-import dateparse
 
 donate = "Helpful? Consider using `/donate`"
 ohno = "Hey, developer here, don't get me in trouble please lol"
@@ -19,7 +18,7 @@ class Convert(commands.Cog):
         
     async def convert(self, interaction: discord.Interaction, message: discord.Message):
 
-        response = await dateparse.parse_date_time(message.content)
+        response = await parse_date_time(message.content)
         if response == "false":
             await interaction.response.send_message(f"I couldn't find a time in that message :sob:", ephemeral=True)
             return

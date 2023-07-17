@@ -6,7 +6,7 @@ from discord import app_commands
 import os
 import openai
 from pymongo import MongoClient
-from Usages import get_and_increment_usage
+from helpers.Usages import get_and_increment_usage
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 

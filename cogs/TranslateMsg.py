@@ -6,7 +6,7 @@ from discord import app_commands
 import os
 import openai
 from pymongo import MongoClient
-import Usages
+from helpers.Usages import get_and_increment_usage
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -58,7 +58,7 @@ class TranslateMsg(commands.Cog):
             await asyncio.sleep(delay=0)
             await interaction.followup.send(f"{response}\n\n{text.jump_url}")
 
-            count = await Usages.get_and_increment_usage(user_id)
+            count = await get_and_increment_usage(user_id)
 
             # donate message 
             chance = randint(1, 10)
